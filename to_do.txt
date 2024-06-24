@@ -1,0 +1,8 @@
+IDEAS:
+    1. create a main and differentiate between the archive api call and the forcast api call depending on which start date the user inputs
+    2. minimum start date is 2016-01-01, maximum end date is 2 days before current date if using forcast
+    3. find out min and max dates for archive
+    4. input validation, make sure all inputs are correct type
+    5. make sure Adherence to PEP8 style
+    6. A clear testing plan and appropriate unit tests
+    7. Github Continuous Integration Automation for Style Checkers and Unit Tests
