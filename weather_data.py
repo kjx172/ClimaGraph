@@ -572,7 +572,7 @@ def main():
                     "Enter an end date (format: yyyy-mm-dd): "
                 )
                 error_code = check_range(user_start, user_end)
-                
+
                 if error_code == 0:
                     break
                 elif error_code == -1:
