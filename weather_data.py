@@ -64,7 +64,9 @@ def query_database():
 
     # Getting city name
     while True:
-        user_input_city = input("Enter the name of the city you want to query: ")
+        user_input_city = input(
+            "Enter the name of the city you want to query: "
+        )
 
         # Attempt to find a city in the database that matches or partially matches the user input
         c.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
@@ -141,7 +143,7 @@ def query_database():
             if user_input_city in table[0]:
                 city_table = table[0]
                 break
-        
+
         if not city_table:
             print("Error: City not found in database. Please enter a valid city name.")
             continue
@@ -154,11 +156,11 @@ def query_database():
     # Get the date range the user wants
     while True:
         start_date = input(
-        "Enter the start date (format: yyyy-mm-dd): "
+            "Enter the start date (format: yyyy-mm-dd): "
         )
         end_date = input(
             "Enter the end date (format: yyyy-mm-dd): "
-            )
+        )
         
         try:
             # Validate the date format
@@ -490,7 +492,7 @@ def main():
             # Input validation for variable index
             while True:
                 try:
-                   selected_index = int(input("Enter which variable index you would like to graph for the selected cities: "))
+                    selected_index = int(input("Enter which variable index you would like to graph for the selected cities: "))
                 except ValueError:
                     print("Error: Please enter an integer index.")
                     continue
