@@ -31,7 +31,16 @@ def write_to_file(cities_dict):
 
     # Create a new table for each city
     for city, dataframe in cities_dict.items():
-        city_table = city.replace(" ", "_").replace(",", "").replace("(", "").replace(")", "").replace("User_entered:", "").replace("-", "_").replace("__", "_").replace("'", "")
+        city_table = (
+            city.replace(" ", "_")
+                .replace(",", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace("User_entered:", "")
+                .replace("-", "_")
+                .replace("__", "_")
+                .replace("'", "")
+        )
 
         c.execute(f'''CREATE TABLE IF NOT EXISTS {city_table} (
                         date TEXT,
@@ -123,7 +132,7 @@ def query_database():
     # Getting city name
     while True:
         user_input_city = input("Enter the name of the city you want to query: ")
-        
+
         # Attempt to find a city in the database that matches or partially matches the user input
         c.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
         tables = c.fetchall()
@@ -136,12 +145,12 @@ def query_database():
         if not city_table:
             print("Error: City not found in database. Please enter a valid city name.")
             continue
-        
+
         try:
             break
         except ValueError:
             print("Error: City not found in database. Please enter a valid city name.")
-    
+
     # Get the date range the user wants
     while True:
         start_date = input(
@@ -493,7 +502,7 @@ def main():
 
             # Find the variable name for the given index
             target_var = ""
-            for j,variable in enumerate(temp_col):
+            for j, variable in enumerate(temp_col):
                 if j == selected_index - 1:
                     target_var = variable
                     break
@@ -514,5 +523,5 @@ def main():
 
 if __name__ == "__main__":
     # Globally suppress the specific UserWarning
-    warnings.filterwarnings("ignore", category=UserWarning, message="Glyph .* missing from font\(s\) DejaVu Sans")
+    warnings.filterwarnings("ignore", category=UserWarning, message=r"Glyph .* missing from font\(s\) DejaVu Sans")
     main()
