@@ -152,7 +152,7 @@ def query_database():
             "Enter the name of the city you want to query: "
         )
 
-        # Attempt to find a city in the database 
+        # Attempt to find a city in the database
         # that matches or partially matches the user input
         c.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
         tables = c.fetchall()
@@ -210,7 +210,7 @@ def query_database():
     if results:
         # Get column names from cursor description
         col_names = [desc[0] for desc in c.description]
-        
+
         # Write results to CSV file
         filename = (
             f"{user_input_city}_weather_data_{start_date}_to_{end_date}.csv"
@@ -313,7 +313,8 @@ def create_graph(cities_dict, target_var):
         # Check if any UserWarning was 
         # issued and replace it with a custom message
         for warning in w:
-            if issubclass(warning.category, UserWarning) and "Glyph" in str(warning.message):
+            if (issubclass(warning.category, UserWarning) and 
+                "Glyph" in str(warning.message)):
                 print(
                     "Warning: cannot properly display "
                     "one or more characters in the city name"
