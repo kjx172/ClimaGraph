@@ -82,7 +82,8 @@ def query_database():
 
         if not city_table:
             print(
-                "Error: City not found in database. Please enter a valid city name."
+                "Error: City not found in database. "
+                "Please enter a valid city name."
                 )
             continue
 
@@ -90,7 +91,8 @@ def query_database():
             break
         except ValueError:
             print(
-                "Error: City not found in database. Please enter a valid city name."
+                "Error: City not found in database."
+                "Please enter a valid city name."
                 )
 
     # Get the date range the user wants
@@ -108,7 +110,10 @@ def query_database():
             datetime.strptime(end_date, "%Y-%m-%d")
             break
         except ValueError:
-            print("Error: Invalid date format. Please enter the date in yyyy-mm-dd format.")
+            print(
+                "Error: Invalid date format."
+                "Please enter the date in yyyy-mm-dd format."
+            )
 
     # SQL query to select data within the specified date range
     query = f'''SELECT * FROM {city_table}
@@ -140,7 +145,9 @@ def query_database():
 
     # Getting city name
     while True:
-        user_input_city = input("Enter the name of the city you want to query: ")
+        user_input_city = input(
+            "Enter the name of the city you want to query: "
+        )
 
         # Attempt to find a city in the database that matches or partially matches the user input
         c.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
@@ -152,13 +159,19 @@ def query_database():
                 break
 
         if not city_table:
-            print("Error: City not found in database. Please enter a valid city name.")
+            print(
+                "Error: City not found in database."
+                "Please enter a valid city name."
+            )
             continue
 
         try:
             break
         except ValueError:
-            print("Error: City not found in database. Please enter a valid city name.")
+            print(
+                "Error: City not found in database."
+                "Please enter a valid city name."
+            )
 
     # Get the date range the user wants
     while True:
@@ -175,7 +188,10 @@ def query_database():
             datetime.strptime(end_date, "%Y-%m-%d")
             break
         except ValueError:
-            print("Error: Invalid date format. Please enter the date in yyyy-mm-dd format.")
+            print(
+                "Error: Invalid date format."
+                "Please enter the date in yyyy-mm-dd format."
+            )
 
     # SQL query to select data within the specified date range
     query = f'''SELECT * FROM {city_table}
@@ -229,14 +245,20 @@ def ensure_valid_date(prompt):
             valid_date = datetime.strptime(user_input, "%Y-%m-%d")
             return user_input
         except ValueError:
-            print("Invalid date format. Please enter the date in yyyy-mm-dd format.")
+            print(
+                "Invalid date format."
+                "Please enter the date in yyyy-mm-dd format."
+            )
     while True:
         user_input = input(prompt)
         try:
             valid_date = datetime.strptime(user_input, "%Y-%m-%d")
             return user_input
         except ValueError:
-            print("Invalid date format. Please enter the date in yyyy-mm-dd format.")
+            print(
+                "Invalid date format."
+                "Please enter the date in yyyy-mm-dd format."
+            )
 
 
 # Checks if the date range is valid
@@ -280,7 +302,10 @@ def create_graph(cities_dict, target_var):
         # Check if any UserWarning was issued and replace it with a custom message
         for warning in w:
             if issubclass(warning.category, UserWarning) and "Glyph" in str(warning.message):
-                print("Warning: cannot properly display one or more characters in the city name")
+                print(
+                    "Warning: cannot properly display "
+                    "one or more characters in the city name"
+                    )
                 break
 
     print("Graph has been saved")
@@ -293,7 +318,11 @@ def weather_forecast(user_start, user_end):
     # Input validation for the number of cities to graph
     while True:
         try:
-            num_cities = int(input("Enter the number of cities you'd like to graph (warning: more than 5 cities might hit the minute rate limit): "))
+            num_cities = int(input(
+                "Enter the number of cities you'd like to graph "
+                "(warning: more than 5 cities might "
+                "hit the minute rate limit): "
+            ))
             break
         except ValueError:
             print("Error: Please enter an integer")
@@ -311,7 +340,10 @@ def weather_forecast(user_start, user_end):
                 city_lon = location.raw['lon']
                 break
             except AttributeError:
-                print("Error: City name not recognized. Please enter a valid city name.")
+                print(
+                    "Error: City name not recognized. "
+                    "Please enter a valid city name."
+                )
 
         # Desired weather variables and specifications in params
         params = {
@@ -336,7 +368,10 @@ def weather_forecast(user_start, user_end):
                 raise  # Re-raise the exception if it's not related to API limit or handle it differently
 
         if not response:
-            print("No response from server. Please enter valid city name.")
+            print(
+                "No response from server. "
+                "Please enter valid city name."
+            )
             continue
 
         # Process daily data. The order of variables needs to be the same as requested.
@@ -381,7 +416,11 @@ def weather_archive(user_start, user_end):
     # Input validation for number of cities to graph
     while True:
         try:
-            num_cities = int(input("Enter the number of cities you'd like to graph (warning: more than 5 cities might hit the minute rate limit): "))
+            num_cities = int(input(
+                "Enter the number of cities you'd like to graph "
+                "(warning: more than 5 cities might "
+                "hit the minute rate limit): "
+            ))
             break
         except ValueError:
             print("Error: Please enter an integer")
@@ -399,7 +438,10 @@ def weather_archive(user_start, user_end):
                 city_lon = location.raw['lon']
                 break
             except AttributeError:
-                print("Error: City name not recognized. Please enter a valid city name.")
+                print(
+                    "Error: City name not recognized. "
+                    "Please enter a valid city name."
+                    )
 
         # Desired weather variables and specifications in params
         params = {
@@ -418,13 +460,19 @@ def weather_archive(user_start, user_end):
         except Exception as e:  # Catching all exceptions
             # Handle any exception here
             if hasattr(e, 'error_data') and getattr(e, 'error_data', {}).get('reason') == 'Minutely API request limit exceeded. Please try again in one minute.':
-                print("API limit exceeded for this minute. Please try again in one minute.")
+                print(
+                    "API limit exceeded for this minute. "
+                    "Please try again in one minute."
+                    )
                 time.sleep(60)  # Wait for one minute before retrying
             else:
                 raise  # Re-raise the exception if it's not related to API limit or handle it differently
 
         if not response:
-            print("No response from server. Please enter valid city name.")
+            print(
+                "No response from server. "
+                "Please enter valid city name."
+                )
             continue
 
         # Process daily data. The order of variables needs to be the same as requested.
@@ -467,7 +515,11 @@ def main():
     database_empty = True
     while True:
         # Prompt user to either add new data or query the database, or exit
-        choice = input("Enter '1' to add new data, '2' to query the database, or '3' to exit: ")
+        choice = input(
+            "Enter '1' to add new data,"
+            " '2' to query the database,"
+            " or '3' to exit: "
+        )
         if choice == '1':
             while True:
                 user_start = ensure_valid_date("Enter a start date (format: yyyy-mm-dd): ")
