@@ -68,7 +68,7 @@ def query_database():
             "Enter the name of the city you want to query: "
         )
 
-        # Attempt to find a city in the database that matches 
+        # Attempt to find a city in the database that matches
         # Or partially matches the user input
         c.execute(
             f"SELECT name FROM sqlite_master WHERE type='table';"
@@ -81,13 +81,17 @@ def query_database():
                 break
 
         if not city_table:
-            print("Error: City not found in database. Please enter a valid city name.")
+            print(
+                "Error: City not found in database. Please enter a valid city name."
+                )
             continue
 
         try:
             break
         except ValueError:
-            print("Error: City not found in database. Please enter a valid city name.")
+            print(
+                "Error: City not found in database. Please enter a valid city name."
+                )
 
     # Get the date range the user wants
     while True:
@@ -181,7 +185,7 @@ def query_database():
 
     # Close the database connection
     conn.close()
-    
+
     # Save results to CSV file
     if results:
         # Get column names from cursor description
