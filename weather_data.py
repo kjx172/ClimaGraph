@@ -13,7 +13,7 @@ import sqlite3
 import csv
 import time  # Added for time.sleep() usage
 
-#Setup the Open-Meteo API client with cache and retry on error
+# Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
 retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
 openmeteo = openmeteo_requests.Client(session=retry_session)
@@ -77,8 +77,12 @@ def query_database():
 
     # Get the date range the user wants
     while True:
-        start_date = input("Enter the start date (format: yyyy-mm-dd): ")
-        end_date = input("Enter the end date (format: yyyy-mm-dd): ")
+        start_date = input(
+            "Enter the start date (format: yyyy-mm-dd): "
+            )
+        end_date = input(
+            "Enter the end date (format: yyyy-mm-dd): "
+            )
 
         try:
             # Validate the date format
@@ -112,15 +116,15 @@ def query_database():
         print(f"Results saved to {filename}")
     else:
         print("No results found for the specified criteria.")
-    #connect to the SQLite database
+    # Connect to the SQLite database
     conn = sqlite3.connect('weather_data.db')
     c = conn.cursor()
-    
-    #getting city name
+
+    # Getting city name
     while True:
         user_input_city = input("Enter the name of the city you want to query: ")
         
-        #attempt to find a city in the database that matches or partially matches the user input
+        # Attempt to find a city in the database that matches or partially matches the user input
         c.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
         tables = c.fetchall()
         city_table = None
@@ -138,10 +142,14 @@ def query_database():
         except ValueError:
             print("Error: City not found in database. Please enter a valid city name.")
     
-    #get the date range the user wants
+    # Get the date range the user wants
     while True:
-        start_date = input("Enter the start date (format: yyyy-mm-dd): ")
-        end_date = input("Enter the end date (format: yyyy-mm-dd): ")
+        start_date = input(
+        "Enter the start date (format: yyyy-mm-dd): "
+        )
+        end_date = input(
+            "Enter the end date (format: yyyy-mm-dd): "
+            )
         
         try:
             # Validate the date format
@@ -157,7 +165,7 @@ def query_database():
     c.execute(query)
     results = c.fetchall()
     
-    #close the database connection
+    # Close the database connection
     conn.close()
     
     # Save results to CSV file
@@ -347,6 +355,7 @@ def weather_forecast(user_start, user_end):
 
     return cities_dict
 
+
 # Uses the weather archive API for start dates before 2016-01-01
 def weather_archive(user_start, user_end):
     url = "https://archive-api.open-meteo.com/v1/archive"
@@ -473,7 +482,7 @@ def main():
             while True:
                 try:
                    selected_index = int(input("Enter which variable index you would like to graph for the selected cities: "))
-                except ValueError: 
+                except ValueError:
                     print("Error: Please enter an integer index.")
                     continue
 
@@ -501,6 +510,7 @@ def main():
             exit()
         else:
             print("Invalid choice. Please enter '1', '2', or '3'.")
+
 
 if __name__ == "__main__":
     # Globally suppress the specific UserWarning
