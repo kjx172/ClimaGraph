@@ -68,7 +68,8 @@ def query_database():
             "Enter the name of the city you want to query: "
         )
 
-        # Attempt to find a city in the database that matches or partially matches the user input
+        # Attempt to find a city in the database that matches 
+        # Or partially matches the user input
         c.execute(
             f"SELECT name FROM sqlite_master WHERE type='table';"
             )
@@ -177,7 +178,7 @@ def query_database():
                 WHERE date BETWEEN '{start_date}' AND '{end_date}' '''
     c.execute(query)
     results = c.fetchall()
-    
+
     # Close the database connection
     conn.close()
     
