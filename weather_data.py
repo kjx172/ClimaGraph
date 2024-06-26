@@ -130,7 +130,10 @@ def query_database():
         col_names = [desc[0] for desc in c.description]
 
         # Write results to CSV file
-        filename = f"{user_input_city}_weather_data_{start_date}_to_{end_date}.csv"
+        filename = (
+            f"{user_input_city}_weather_data_{start_date}_to_{end_date}.csv"
+        )
+
         with open(filename, 'w', newline='') as file:
             csv_writer = csv.writer(file)
             csv_writer.writerow(col_names)  # Write column headers
@@ -149,7 +152,8 @@ def query_database():
             "Enter the name of the city you want to query: "
         )
 
-        # Attempt to find a city in the database that matches or partially matches the user input
+        # Attempt to find a city in the database 
+        # that matches or partially matches the user input
         c.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
         tables = c.fetchall()
         city_table = None
@@ -208,7 +212,10 @@ def query_database():
         col_names = [desc[0] for desc in c.description]
         
         # Write results to CSV file
-        filename = f"{user_input_city}_weather_data_{start_date}_to_{end_date}.csv"
+        filename = (
+            f"{user_input_city}_weather_data_{start_date}_to_{end_date}.csv"
+        )
+
         with open(filename, 'w', newline='') as file:
             csv_writer = csv.writer(file)
             csv_writer.writerow(col_names)  # Write column headers
@@ -237,7 +244,8 @@ def check_date(date_str):
         return False
 
 
-# Ensures the date is in the correct format, return the str as it's needed later
+# Ensures the date is in the correct format
+# Return the str as it's needed later
 def ensure_valid_date(prompt):
     while True:
         user_input = input(prompt)
@@ -291,7 +299,10 @@ def create_graph(cities_dict, target_var):
 
         plt.figure(figsize=(12, 6))
         for city, dataframe in cities_dict.items():
-            plt.plot(dataframe['date'], dataframe[target_var], label=target_var + " " + city)
+            plt.plot(
+                dataframe['date'], dataframe[target_var],
+                label=target_var + " " + city
+            )
 
         plt.xlabel('Date')
         plt.ylabel(target_var)
@@ -299,7 +310,8 @@ def create_graph(cities_dict, target_var):
         plt.legend()
         plt.savefig(target_var + '_plot.png')
 
-        # Check if any UserWarning was issued and replace it with a custom message
+        # Check if any UserWarning was 
+        # issued and replace it with a custom message
         for warning in w:
             if issubclass(warning.category, UserWarning) and "Glyph" in str(warning.message):
                 print(
@@ -331,7 +343,8 @@ def weather_forecast(user_start, user_end):
     city_count = 1
 
     while num_cities != 0:
-        # Gets longitude and latitude from user city input, Input validation for city name
+        # Gets longitude and latitude from user city input
+        # Input validation for city name
         while True:
             user_city = input(f"Enter the name of city #{city_count}: ")
             try:
@@ -349,7 +362,9 @@ def weather_forecast(user_start, user_end):
         params = {
             "latitude": city_lat,
             "longitude": city_lon,
-            "daily": ["temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "wind_speed_10m_max"],
+            "daily": [
+                "temperature_2m_max", "temperature_2m_min", "uv_index_max",
+                "precipitation_sum", "wind_speed_10m_max"],
             "temperature_unit": "fahrenheit",
             "wind_speed_unit": "mph",
             "precipitation_unit": "inch",
@@ -362,10 +377,13 @@ def weather_forecast(user_start, user_end):
         except Exception as e:  # Catching all exceptions
             # Handle any exception here
             if hasattr(e, 'error_data') and getattr(e, 'error_data', {}).get('reason') == 'Minutely API request limit exceeded. Please try again in one minute.':
-                print("API limit exceeded for this minute. Please try again in one minute.")
+                print(
+                    "API limit exceeded for this minute. "
+                    "Please try again in one minute."
+                )
                 time.sleep(60)  # Wait for one minute before retrying
             else:
-                raise  # Re-raise the exception if it's not related to API limit or handle it differently
+                raise  # Re-raise the exception if not related to API limit
 
         if not response:
             print(
@@ -374,7 +392,8 @@ def weather_forecast(user_start, user_end):
             )
             continue
 
-        # Process daily data. The order of variables needs to be the same as requested.
+        # Process daily data
+        # The order of variables needs to be the same as requested.
         daily = response[0].Daily()
 
         # Extract data for each variable and convert to Numpy arrays
@@ -384,7 +403,8 @@ def weather_forecast(user_start, user_end):
         daily_precipitation_sum = daily.Variables(3).ValuesAsNumpy()
         daily_wind_speed_10m_max = daily.Variables(4).ValuesAsNumpy()
 
-        # Create a daily_data dictionary and add the extracted data to dictionary
+        # Create a daily_data dictionary
+        # Add the extracted data to dictionary
         daily_data = {"date": pd.date_range(
             start=pd.to_datetime(daily.Time(), unit="s", utc=True),
             end=pd.to_datetime(daily.TimeEnd(), unit="s", utc=True),
@@ -399,7 +419,10 @@ def weather_forecast(user_start, user_end):
 
         # Place the city name and the dataframe into a dictionary
         daily_dataframe = pd.DataFrame(data=daily_data)
-        cities_dict[location.raw['display_name'] + "(User entered: " + user_city + ")"] = daily_dataframe
+        cities_dict[
+            f"{location.raw['display_name']} (User entered: {user_city})"
+        ] = daily_dataframe
+
         num_cities -= 1
         city_count += 1
 
@@ -429,7 +452,8 @@ def weather_archive(user_start, user_end):
     city_count = 1
 
     while num_cities != 0:
-        # Gets longitude and latitude from user city input, Input validation for city name
+        # Gets longitude and latitude from user city input
+        # Input validation for city name
         while True:
             user_city = input(f"Enter the name of city #{city_count}: ")
             try:
@@ -447,7 +471,10 @@ def weather_archive(user_start, user_end):
         params = {
             "latitude": city_lat,
             "longitude": city_lon,
-            "daily": ["temperature_2m_max", "temperature_2m_min", "temperature_2m_mean", "precipitation_sum", "wind_speed_10m_max", "shortwave_radiation_sum"],
+            "daily": [
+                "temperature_2m_max", "temperature_2m_min",
+                "temperature_2m_mean", "precipitation_sum",
+                "wind_speed_10m_max", "shortwave_radiation_sum"],
             "temperature_unit": "fahrenheit",
             "wind_speed_unit": "mph",
             "precipitation_unit": "inch",
@@ -466,7 +493,7 @@ def weather_archive(user_start, user_end):
                     )
                 time.sleep(60)  # Wait for one minute before retrying
             else:
-                raise  # Re-raise the exception if it's not related to API limit or handle it differently
+                raise  # Re-raise the exception if not related to API limit
 
         if not response:
             print(
@@ -475,7 +502,8 @@ def weather_archive(user_start, user_end):
                 )
             continue
 
-        # Process daily data. The order of variables needs to be the same as requested.
+        # Process daily data.
+        # The order of variables needs to be the same as requested.
         daily = response[0].Daily()
 
         daily_temperature_2m_max = daily.Variables(0).ValuesAsNumpy()
@@ -485,7 +513,8 @@ def weather_archive(user_start, user_end):
         daily_wind_speed_10m_max = daily.Variables(4).ValuesAsNumpy()
         daily_shortwave_radiation_sum = daily.Variables(5).ValuesAsNumpy()
 
-        # Create a daily_data dictionary and add the extracted data to dictionary
+        # Create a daily_data dictionary
+        # add the extracted data to dictionary
         daily_data = {"date": pd.date_range(
             start=pd.to_datetime(daily.Time(), unit="s", utc=True),
             end=pd.to_datetime(daily.TimeEnd(), unit="s", utc=True),
@@ -501,7 +530,10 @@ def weather_archive(user_start, user_end):
 
         # Place the city name and the dataframe into a dictionary
         daily_dataframe = pd.DataFrame(data=daily_data)
-        cities_dict[location.raw['display_name'] + "(User entered: " + user_city + ")"] = daily_dataframe
+        cities_dict[
+            f"{location.raw['display_name']} (User entered: {user_city})"
+        ] = daily_dataframe
+
         num_cities -= 1
         city_count += 1
 
@@ -522,18 +554,28 @@ def main():
         )
         if choice == '1':
             while True:
-                user_start = ensure_valid_date("Enter a start date (format: yyyy-mm-dd): ")
-                user_end = ensure_valid_date("Enter an end date (format: yyyy-mm-dd): ")
+                user_start = ensure_valid_date(
+                    "Enter a start date (format: yyyy-mm-dd): "
+                )
+                user_end = ensure_valid_date(
+                    "Enter an end date (format: yyyy-mm-dd): "
+                )
                 error_code = check_range(user_start, user_end)
                 
                 if error_code == 0:
                     break
                 elif error_code == -1:
-                    print("Error: Ensure that the start date is before the end date.")
+                    print(
+                        "Error: "
+                        "Ensure that the start date is before the end date."
+                    )
                 elif error_code == -2:
                     print("Error: Start date cannot be before 1940-01-01.")
                 elif error_code == -3:
-                    print(f"Error: End date cannot be after the current date ({datetime.now().date()}).")
+                    print(
+                        f"Error: End date cannot be after the current date "
+                        f"({datetime.now().date()})."
+                        )
 
             # If the start date is before 2016, use the archive API
             pre_2016 = check_date(user_start)
@@ -551,7 +593,10 @@ def main():
             # Input validation for variable index
             while True:
                 try:
-                    selected_index = int(input("Enter which variable index you would like to graph for the selected cities: "))
+                    selected_index = int(input(
+                        "Enter which variable index you would "
+                        "like to graph for the selected cities: "
+                    ))
                 except ValueError:
                     print("Error: Please enter an integer index.")
                     continue
@@ -573,7 +618,10 @@ def main():
 
         elif choice == '2':
             if database_empty:
-                print("Database empty, please add data before attempting to query the database")
+                print(
+                    "Database empty, please add data before "
+                    "attempting to query the database"
+                )
             else:
                 query_database()
         elif choice == '3':
@@ -584,5 +632,8 @@ def main():
 
 if __name__ == "__main__":
     # Globally suppress the specific UserWarning
-    warnings.filterwarnings("ignore", category=UserWarning, message=r"Glyph .* missing from font\(s\) DejaVu Sans")
+    warnings.filterwarnings(
+        "ignore", category=UserWarning,
+        message=r"Glyph .* missing from font\(s\) DejaVu Sans"
+    )
     main()
