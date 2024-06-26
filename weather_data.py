@@ -69,7 +69,9 @@ def query_database():
         )
 
         # Attempt to find a city in the database that matches or partially matches the user input
-        c.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
+        c.execute(
+            f"SELECT name FROM sqlite_master WHERE type='table';"
+            )
         tables = c.fetchall()
         city_table = None
         for table in tables:
@@ -161,7 +163,7 @@ def query_database():
         end_date = input(
             "Enter the end date (format: yyyy-mm-dd): "
         )
-        
+
         try:
             # Validate the date format
             datetime.strptime(start_date, "%Y-%m-%d")
@@ -169,7 +171,7 @@ def query_database():
             break
         except ValueError:
             print("Error: Invalid date format. Please enter the date in yyyy-mm-dd format.")
-    
+
     # SQL query to select data within the specified date range
     query = f'''SELECT * FROM {city_table}
                 WHERE date BETWEEN '{start_date}' AND '{end_date}' '''
