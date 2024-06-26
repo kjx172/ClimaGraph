@@ -237,7 +237,7 @@ def check_date(date_str):
         return False
     str_list = date_str.split("-")
     year = int(str_list[0])
-    
+
     if year < 2016:
         return True
     else:
@@ -313,8 +313,8 @@ def create_graph(cities_dict, target_var):
         # Check if any UserWarning was
         # issued and replace it with a custom message
         for warning in w:
-            if (issubclass(warning.category, UserWarning):
-                if "Glyph" in str(warning.message)):
+            if issubclass(warning.category, UserWarning):
+                if "Glyph" in str(warning.message):
                     print(
                         "Warning: cannot properly display "
                         "one or more characters in the city name"
