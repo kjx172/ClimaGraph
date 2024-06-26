@@ -1,6 +1,6 @@
 IDEAS:
-    3. find out min and max dates for archive (fix error_code not updating after -1; check CheckRange function)
     5. make sure Adherence to PEP8 style
     6. A clear testing plan and appropriate unit tests
     7. Github Continuous Integration Automation for Style Checkers and Unit Tests
-    8. Send 1 error message if character in another language is unable to be displayed
+    9. find way to implement sql?
+    problem with the forcast API

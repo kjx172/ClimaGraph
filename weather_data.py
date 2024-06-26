@@ -1,12 +1,13 @@
 import openmeteo_requests
 from geopy.geocoders import Nominatim
-
 import matplotlib.pyplot as plt
-
 import requests_cache
+import requests
 import pandas as pd
 from retry_requests import retry
 from datetime import datetime
+import warnings
+from matplotlib.font_manager import FontProperties
 
 #----------------------------------------------------#
 
@@ -19,23 +20,14 @@ openmeteo = openmeteo_requests.Client(session = retry_session)
 geolocator = Nominatim(user_agent='weather_data')
 
 #---------------------helper functions-----------------------------#
-def EnsureValidDate(prompt):
-
-    #Input validation for date entry
-    while True:
-        user_input = input(prompt)
-        try:
-            # Try to parse the input into a datetime object
-            valid_date = datetime.strptime(user_input, "%Y-%m-%d")
-            return user_input
-        except ValueError:
-            print("Invalid date format. Please enter the date in yyyy-mm-dd format.")
-
 def WriteToFile(cities_dict):
-    f = open("database_file.txt", "w")
+    count = 1
     for key, value in cities_dict.items():
+        f = open(f"database{count}.db", "w")
         f.write(key + '\n' + str(value) + '\n')
-    f.close()
+        f.close()
+
+        count += 1
 
 #checks if date is before 2016
 def CheckDate(date_str):
@@ -47,43 +39,59 @@ def CheckDate(date_str):
     else:
         return False
 
-#checks if end date is after the start range 
+# Ensures the date is in the correct format
+def EnsureValidDate(prompt):
+    while True:
+        user_input = input(prompt)
+        try:
+            valid_date = datetime.strptime(user_input, "%Y-%m-%d")
+            return user_input
+        except ValueError:
+            print("Invalid date format. Please enter the date in yyyy-mm-dd format.")
+
+# Checks if the date range is valid
 def CheckRange(user_start, user_end):
     error_code = 0
+    user_start_datetime = datetime.strptime(user_start, "%Y-%m-%d")
+    user_end_datetime = datetime.strptime(user_end, "%Y-%m-%d")
 
-    #Checks if start date is before end date
-    try:
-        start_date = datetime.strptime(user_start, "%Y-%m-%d")
-        end_date = datetime.strptime(user_end, "%Y-%m-%d")
-        if end_date >= start_date:
-                error_code = -1
-    except ValueError:
+    # Check if start date is after end date
+    if user_end_datetime < user_start_datetime:
         error_code = -1
 
-    #Checks if end date is before start date
-    if end_date < start_date:
-        error_code = -1
-
-    #Check if start date is before 1940
+    # Check if start date is before 1940
     minimum_start = datetime.strptime("1940-01-01", "%Y-%m-%d")
-    if start_date < minimum_start:
+    if user_start_datetime < minimum_start:
         error_code = -2
 
-    #Check if end date is before current date
-    if end_date < datetime.now():
+    # Check if end date is after the current date
+    if user_end_datetime > datetime.now():
         error_code = -3
 
-    return 0
+    return error_code
+
 
 def CreateGraph(cities_dict, target_var):
-    plt.figure(figsize=(12, 6))
-    for city, dataframe in cities_dict.items():
-        plt.plot(dataframe['date'], dataframe[target_var], label=target_var + " " + city)
-    plt.xlabel('Date')
-    plt.ylabel(target_var)
-    plt.title(target_var + " over time")
-    plt.legend()
-    plt.savefig(target_var + '_plot.png')
+    # Custom warning filter
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        
+        plt.figure(figsize=(12, 6))
+        for city, dataframe in cities_dict.items():
+            plt.plot(dataframe['date'], dataframe[target_var], label=target_var + " " + city)
+        
+        plt.xlabel('Date')
+        plt.ylabel(target_var)
+        plt.title(target_var + " over time")
+        plt.legend()
+        plt.savefig(target_var + '_plot.png')
+        
+        # Check if any UserWarning was issued and replace it with a custom message
+        for warning in w:
+            if issubclass(warning.category, UserWarning) and "Glyph" in str(warning.message):
+                print("Warning: cannot properly display one or more characters in the city name")
+                break
+    
     print("File has been saved")
 
 #--------------------------------------------------#
@@ -257,16 +265,15 @@ def main():
         user_start = EnsureValidDate("Enter a start date (format: yyyy-mm-dd): ")
         user_end = EnsureValidDate("Enter an end date (format: yyyy-mm-dd): ")
         error_code = CheckRange(user_start, user_end)
+        
         if error_code == 0:
             break
         elif error_code == -1:
-            print("Error: Ensure that start date is before end date and that both dates follow the format.")
+            print("Error: Ensure that the start date is before the end date.")
         elif error_code == -2:
-            print("Error: Start date cannot precede 1940-01-01.")
+            print("Error: Start date cannot be before 1940-01-01.")
         elif error_code == -3:
-            print("Error: End date cannot surpass the current date.")
-        else:
-            print("Error: Ensure that end date is greater than or equal to start date.")
+            print(f"Error: End date cannot be after the current date ({datetime.now().date()}).")
 
     #if date is before 2016, use the archive api
     pre_2016 = CheckDate(user_start)
