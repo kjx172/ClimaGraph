@@ -220,7 +220,7 @@ def query_database():
             csv_writer = csv.writer(file)
             csv_writer.writerow(col_names)  # Write column headers
             csv_writer.writerows(results)   # Write data rows
-        
+
         print(f"Results saved to {filename}")
     else:
         print("No results found for the specified criteria.")
@@ -310,15 +310,15 @@ def create_graph(cities_dict, target_var):
         plt.legend()
         plt.savefig(target_var + '_plot.png')
 
-        # Check if any UserWarning was 
+        # Check if any UserWarning was
         # issued and replace it with a custom message
         for warning in w:
-            if (issubclass(warning.category, UserWarning) and 
-                "Glyph" in str(warning.message)):
-                print(
-                    "Warning: cannot properly display "
-                    "one or more characters in the city name"
-                    )
+            if (issubclass(warning.category, UserWarning):
+                if "Glyph" in str(warning.message)):
+                    print(
+                        "Warning: cannot properly display "
+                        "one or more characters in the city name"
+                        )
                 break
 
     print("Graph has been saved")
@@ -376,13 +376,18 @@ def weather_forecast(user_start, user_end):
         try:
             response = openmeteo.weather_api(url, params=params)
         except Exception as e:  # Catching all exceptions
+            sample_error = (
+                'Minutely API request limit exceeded. '
+                'Please try again in one minute.'
+            )
             # Handle any exception here
-            if hasattr(e, 'error_data') and getattr(e, 'error_data', {}).get('reason') == 'Minutely API request limit exceeded. Please try again in one minute.':
-                print(
-                    "API limit exceeded for this minute. "
-                    "Please try again in one minute."
-                )
-                time.sleep(60)  # Wait for one minute before retrying
+            if hasattr(e, 'error_data'):
+                if getattr(e, 'error_data', {}).get('reason') == sample_error:
+                    print(
+                        "API limit exceeded for this minute. "
+                        "Please try again in one minute."
+                    )
+                    time.sleep(60)  # Wait for one minute before retrying
             else:
                 raise  # Re-raise the exception if not related to API limit
 
@@ -486,13 +491,18 @@ def weather_archive(user_start, user_end):
         try:
             response = openmeteo.weather_api(url, params=params)
         except Exception as e:  # Catching all exceptions
+            sample_error = (
+                'Minutely API request limit exceeded. '
+                'Please try again in one minute.'
+            )
             # Handle any exception here
-            if hasattr(e, 'error_data') and getattr(e, 'error_data', {}).get('reason') == 'Minutely API request limit exceeded. Please try again in one minute.':
-                print(
-                    "API limit exceeded for this minute. "
-                    "Please try again in one minute."
+            if hasattr(e, 'error_data'):
+                if getattr(e, 'error_data', {}).get('reason') == sample_error:
+                    print(
+                        "API limit exceeded for this minute. "
+                        "Please try again in one minute."
                     )
-                time.sleep(60)  # Wait for one minute before retrying
+                    time.sleep(60)  # Wait for one minute before retrying
             else:
                 raise  # Re-raise the exception if not related to API limit
 
