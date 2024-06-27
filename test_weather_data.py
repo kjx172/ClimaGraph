@@ -1,10 +1,13 @@
 import unittest
-from unittest.mock import patch, mock_open, MagicMock
-from weather_data import *
-from io import StringIO
-import pandas as pd
-from datetime import datetime, timedelta
+from unittest.mock import patch, MagicMock
 import warnings
+from io import StringIO
+from datetime import datetime, timedelta
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from weather_data import *
+
 
 class TestWeatherData(unittest.TestCase):
 
@@ -46,7 +49,7 @@ class TestWeatherData(unittest.TestCase):
         with patch('weather_data.sqlite3') as mock_sqlite:
             mock_cursor = mock_sqlite.connect().cursor()
             # Mock database cursor to return an empty result
-            mock_cursor.fetchall.return_value = [('2023-01-01_weather_data_2023-01-01_to_2023-01-07.csv',)]
+            mock_cursor.fetchall.return_value = []
             query_database()
 
         # Assert that the expected error message is printed
@@ -98,10 +101,10 @@ class TestWeatherData(unittest.TestCase):
         # Test dates before 2016
         self.assertTrue(check_date('2015-12-31'))
         self.assertTrue(check_date('2000-01-01'))
-        
+
         # Test date on 2016
         self.assertFalse(check_date('2016-01-01'))
-        
+
         # Test dates after 2016
         self.assertFalse(check_date('2017-01-01'))
         self.assertFalse(check_date('2020-01-01'))
@@ -112,7 +115,7 @@ class TestWeatherData(unittest.TestCase):
         # Test the function with invalid date followed by a valid date
         result = ensure_valid_date("Enter the date (format: yyyy-mm-dd): ")
         self.assertEqual(result, '2023-01-01')
-        
+
         # Check if the error message was printed for the invalid date
         mock_print.assert_called_with(
             "Invalid date format. Please enter the date in yyyy-mm-dd format."
@@ -144,8 +147,8 @@ class TestWeatherData(unittest.TestCase):
 
         target_var = 'temperature'
 
-        # with self.assertWarns(UserWarning):
-        #     create_graph(cities_dict, target_var)
+        with self.assertWarns(UserWarning):
+            create_graph(cities_dict, target_var)
 
         # Test that the plot file is created
         expected_filename = f'{target_var}_plot.png'
@@ -153,8 +156,7 @@ class TestWeatherData(unittest.TestCase):
             plt.imread(expected_filename)  # Check if the file exists
         except FileNotFoundError:
             self.fail(f"Plot file '{expected_filename}' not created.")
-    
+
 
 # if __name__ == '__main__':
 #     unittest.main()
-
