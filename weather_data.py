@@ -57,6 +57,7 @@ def write_to_file(cities_dict):
     conn.commit()
     conn.close()
 
+
 def query_database():
     # Connect to the SQLite database
     conn = sqlite3.connect('weather_data.db')
