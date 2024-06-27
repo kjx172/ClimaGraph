@@ -24,9 +24,6 @@ jobs:
           pip install pandas
           pip install retry_requests
           pip install datetime
-          pip install sqlite3
-          pip install csv
-          pip install time
 
       - name: Test with unittest
         run: python3 -m unittest test_weather_data.py
