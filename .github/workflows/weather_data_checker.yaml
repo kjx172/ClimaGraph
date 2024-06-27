@@ -24,7 +24,6 @@ jobs:
           pip install pandas
           pip install retry_requests
           pip install datetime
-          pip install warnings
           pip install sqlite3
           pip install csv
           pip install time
