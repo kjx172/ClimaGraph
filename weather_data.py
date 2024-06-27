@@ -154,13 +154,6 @@ def check_date(date_str):
         return True
     else:
         return False
-    str_list = date_str.split("-")
-    year = int(str_list[0])
-
-    if year < 2016:
-        return True
-    else:
-        return False
 
 
 # Ensures the date is in the correct format
@@ -173,17 +166,7 @@ def ensure_valid_date(prompt):
             return user_input
         except ValueError:
             print(
-                "Invalid date format."
-                "Please enter the date in yyyy-mm-dd format."
-            )
-    while True:
-        user_input = input(prompt)
-        try:
-            valid_date = datetime.strptime(user_input, "%Y-%m-%d")
-            return user_input
-        except ValueError:
-            print(
-                "Invalid date format."
+                "Invalid date format. "
                 "Please enter the date in yyyy-mm-dd format."
             )
 
