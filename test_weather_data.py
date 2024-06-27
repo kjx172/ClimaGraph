@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import warnings
 
+
 class TestWeatherData(unittest.TestCase):
 
     @patch('builtins.input', side_effect=[
@@ -18,7 +19,6 @@ class TestWeatherData(unittest.TestCase):
         # Assert that the dictionary is not empty
         self.assertTrue(len(cities_dict) > 0)
 
-
     @patch('builtins.input', side_effect=[
         1, 'New York', '2023-01-01', '2023-01-07'])
     def test_weather_archive(self, mock_input):
@@ -29,12 +29,11 @@ class TestWeatherData(unittest.TestCase):
         # Assert that the dictionary is not empty
         self.assertTrue(len(cities_dict) > 0)
 
-
     @patch('builtins.input', side_effect=[
         'New York', '2023-01-01', '2023-01-01', '2023-01-07'])
     @patch('sys.stdout', new_callable=StringIO)
     def test_query_database_existing_city(self, mock_stdout, mock_input):
-        # Test query_database function with mocked 
+        # Test query_database function with mocked
         # Database response for an existing city
         with patch('weather_data.sqlite3') as mock_sqlite:
             mock_cursor = mock_sqlite.connect().cursor()
@@ -42,11 +41,10 @@ class TestWeatherData(unittest.TestCase):
             mock_cursor.fetchall.return_value = [
                 ('2023-01-01_weather_data_2023-01-01_to_2023-01-07.csv',)]
             query_database()
-
         # Assert that the expected message is printed
         saved_csv = "2023-01-01_weather_data_2023-01-01_to_2023-01-07.csv"
         self.assertIn(
-            f"Results saved to {saved_csv}" , mock_stdout.getvalue().strip())
+            f"Results saved to {saved_csv}", mock_stdout.getvalue().strip())
 
     @patch('builtins.input', side_effect=[
         'Nonexistent City', '2023-01-01', '2023-01-01', '2023-01-07'])
@@ -64,7 +62,7 @@ class TestWeatherData(unittest.TestCase):
         # Assert that the expected error message is printed
         prompt_str = "Please enter a valid city name"
         self.assertIn(f"Error: City not found in database. {prompt_str}.",
-        mock_stdout.getvalue().strip())
+            mock_stdout.getvalue().strip())
 
     @patch('weather_data.sqlite3.connect')
     @patch('pandas.DataFrame.to_sql')
@@ -107,7 +105,7 @@ class TestWeatherData(unittest.TestCase):
 
         # Verify that the dataframe was written to the table
         sample_df.to_sql.assert_called_with(expected_table_name,
-        mock_conn, if_exists='replace', index=False)
+            mock_conn, if_exists='replace', index=False)
 
     def test_check_date(self):
         # Test dates before 2016
@@ -116,7 +114,7 @@ class TestWeatherData(unittest.TestCase):
 
         # Test date on 2016
         self.assertFalse(check_date('2016-01-01'))
-        
+
         # Test dates after 2016
         self.assertFalse(check_date('2017-01-01'))
         self.assertFalse(check_date('2020-01-01'))
