@@ -1,6 +1,5 @@
 IDEAS:
-    5. make sure Adherence to PEP8 style
     6. A clear testing plan and appropriate unit tests
     7. Github Continuous Integration Automation for Style Checkers and Unit Tests
-    9. find way to implement sql?
-    problem with the forcast API
+    10. problem with the forcast API
+    11. test if exception handling for rate limit works, ensure that daily limit does not go over (try only 12 max)
