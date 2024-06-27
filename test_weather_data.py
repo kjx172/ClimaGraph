@@ -50,7 +50,7 @@ class TestWeatherData(unittest.TestCase):
         'Nonexistent City', '2023-01-01', '2023-01-01', '2023-01-07'])
     @patch('sys.stdout', new_callable=StringIO)
     def test_query_database_nonexistent_city(self, mock_stdout, mock_input):
-        # Test query_database function with mocked 
+        # Test query_database function with mocked
         # Database response for a nonexistent city
         with patch('weather_data.sqlite3') as mock_sqlite:
             mock_cursor = mock_sqlite.connect().cursor()
@@ -61,8 +61,10 @@ class TestWeatherData(unittest.TestCase):
 
         # Assert that the expected error message is printed
         prompt_str = "Please enter a valid city name"
-        self.assertIn(f"Error: City not found in database. {prompt_str}.",
-            mock_stdout.getvalue().strip())
+        self.assertIn(
+            f"Error: City not found in database. {prompt_str}.",
+            mock_stdout.getvalue().strip()
+        )
 
     @patch('weather_data.sqlite3.connect')
     @patch('pandas.DataFrame.to_sql')
@@ -104,8 +106,10 @@ class TestWeatherData(unittest.TestCase):
         mock_conn.close.assert_called_once()
 
         # Verify that the dataframe was written to the table
-        sample_df.to_sql.assert_called_with(expected_table_name,
-            mock_conn, if_exists='replace', index=False)
+        sample_df.to_sql.assert_called_with(
+            expected_table_name,
+            mock_conn, if_exists='replace', index=False
+        )
 
     def test_check_date(self):
         # Test dates before 2016
@@ -125,7 +129,7 @@ class TestWeatherData(unittest.TestCase):
         # Test the function with invalid date followed by a valid date
         result = ensure_valid_date("Enter the date (format: yyyy-mm-dd): ")
         self.assertEqual(result, '2023-01-01')
-        
+
         # Check if the error message was printed for the invalid date
         mock_print.assert_called_with(
             "Invalid date format. Please enter the date in yyyy-mm-dd format."
