@@ -12,6 +12,7 @@ from matplotlib.font_manager import FontProperties
 import sqlite3
 import csv
 import time  # Added for time.sleep() usage
+import re
 
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
@@ -55,7 +56,6 @@ def write_to_file(cities_dict):
 
     conn.commit()
     conn.close()
-
 
 def query_database():
     # Connect to the SQLite database
