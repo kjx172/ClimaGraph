@@ -140,6 +140,7 @@ def query_database():
             csv_writer.writerows(results)   # Write data rows
 
         print(f"Results saved to {filename}")
+        return
     else:
         print("No results found for the specified criteria.")
     # Connect to the SQLite database
@@ -222,6 +223,7 @@ def query_database():
             csv_writer.writerows(results)   # Write data rows
 
         print(f"Results saved to {filename}")
+        return
     else:
         print("No results found for the specified criteria.")
 
