@@ -16,6 +16,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip pytest
           pip install coverage
+          pip install openmeteo_requests
+          pip install geopy
+          pip install matplotlib
+          pip install requests_cache
+          pip install requests
+          pip install pandas
+          pip install retry_requests
+          pip install datetime
+          pip install warnings
+          pip install sqlite3
+          pip install csv
+          pip install time
 
       - name: Test with unittest
         run: python3 -m unittest test_weather_data.py
