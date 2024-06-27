@@ -1,5 +1,4 @@
 # Imports
-import openmeteo_requests
 from geopy.geocoders import Nominatim
 import matplotlib.pyplot as plt
 import requests_cache
