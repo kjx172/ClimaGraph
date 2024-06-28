@@ -93,5 +93,4 @@ The program may hit the rate limit for API requests unless a commercial use lice
 ## Additional Information
 For more details about the program, take a look at the Pitch Deck to learn more.
 
-[![Tests](https://github.com/kjx172/ClimaGraph/actions/workflows/weather_data_checker.yaml/badge.svg)](https://github.com/kjx172/ClimaGraph/actions/workflows/weather_data_checker.yaml)
 [![Check Style](https://github.com/kjx172/ClimaGraph/actions/workflows/style_checker.yaml/badge.svg)](https://github.com/kjx172/ClimaGraph/actions/workflows/style_checker.yaml)
