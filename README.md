@@ -10,3 +10,6 @@ program functions:
 4. Export generated database as a csv file
 
 *note: this code is built of the free Open-Meteo Historical weather API and the Weather forcast Api, the code will likely hit the rate limit unless a commercial use license plan is purchased*
+
+[![Tests](https://github.com/kjx172/ClimaGraph/actions/workflows/weather_data_checker.yaml/badge.svg)](https://github.com/kjx172/ClimaGraph/actions/workflows/weather_data_checker.yaml)
+[![Check Style](https://github.com/kjx172/ClimaGraph/actions/workflows/style_checker.yaml/badge.svg)](https://github.com/kjx172/ClimaGraph/actions/workflows/style_checker.yaml)
