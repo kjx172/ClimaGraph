@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, mock_open, MagicMock
-from weather_data import *
+from ClimaGraph import *
 from io import StringIO
 import pandas as pd
 from datetime import datetime, timedelta
