@@ -1,3 +1,0 @@
-IDEAS:
-    6. A clear testing plan and appropriate unit tests
-    7. Github Continuous Integration Automation for Style Checkers and Unit Tests
