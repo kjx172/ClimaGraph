@@ -26,7 +26,7 @@ jobs:
           pip install datetime
 
       - name: Test with unittest
-        run: python3 -m unittest test_weather_data.py
+        run: python3 -m unittest test_ClimaGraph.py
 
       - name: Check code coverage
         run: |
