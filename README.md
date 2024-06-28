@@ -1,9 +1,7 @@
 ## README file
 **Take a look at the Pitch Deck to learn more about the program**
 
-**To Run**:
-  -download the weather_data.py and run in terminal
-  -might have to install the some of the imported libraries
+**To Run**: download the weather_data.py and run in terminal (might have to install the some of the imported libraries)
 
 program functions:
 1. gather weather data over time
