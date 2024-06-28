@@ -1,7 +1,7 @@
 ## README file
 **Take a look at the Pitch Deck to learn more about the program**
 
-**To Run**:
+**To Run**
 -download the weather_data.py and run in terminal
 -might have to install the some of the imported libraries
 
